@@ -1,0 +1,21 @@
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-roomcraft}
+      MYSQL_USER: ${MYSQL_USER:-roomcraft}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-roomcraft}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-change-this-root-password}
+    ports:
+      - "3306:3306"
+    volumes:
+      - roomcraft_mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+
+volumes:
+  roomcraft_mysql:
